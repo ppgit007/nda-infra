@@ -32,7 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       source_sha: ${{ steps.capture_source_sha.outputs.source_sha }}
-    #environment: ${{ inputs.environment }}
+    # Plan uses a dedicated environment without approval gates so it runs automatically.
+    # Apply uses the protected '${{ inputs.environment }}' environment (with required reviewers).
+    environment: ${{ inputs.environment }}-plan
     defaults:
       run:
         working-directory: environments/${{ inputs.environment }}
