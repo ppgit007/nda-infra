@@ -3,7 +3,7 @@ output "resource_group_name" {
 }
 
 output "managed_identity_principal_id" {
-  value = module.managed_identity.principal_id
+  value = module.managed_identity["enabled"].principal_id
 }
 
 output "key_vault_id" {
@@ -11,7 +11,7 @@ output "key_vault_id" {
 }
 
 output "redis_id" {
-  value = module.redis["enabled"].id
+  value = try(module.redis["enabled"].id, null)
 }
 
 output "service_bus_id" {
@@ -19,19 +19,19 @@ output "service_bus_id" {
 }
 
 output "ai_search_id" {
-  value = module.ai_search["enabled"].id
+  value = try(module.ai_search["enabled"].id, null)
 }
 
 output "ai_search_endpoint" {
-  value = module.ai_search["enabled"].endpoint
+  value = try(module.ai_search["enabled"].endpoint, null)
 }
 
 output "azure_openai_id" {
-  value = module.azure_openai["enabled"].id
+  value = try(module.azure_openai["enabled"].id, null)
 }
 
 output "azure_openai_endpoint" {
-  value = module.azure_openai["enabled"].endpoint
+  value = try(module.azure_openai["enabled"].endpoint, null)
 }
 
 # output "acr_login_server" {
