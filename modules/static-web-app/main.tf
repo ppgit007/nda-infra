@@ -11,7 +11,7 @@
 #}
 
 
-resource "azurerm_static_site" "static_web_app" {
+resource "azurerm_static_web_app" "static_web_app" {
   name                = var.name
   location            = var.staticWebAppLocation
   resource_group_name = var.resource_group_name
