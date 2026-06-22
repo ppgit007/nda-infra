@@ -14,8 +14,8 @@ resource_group_name     = "my-rg1"           # Name of the resource group (must 
 tenant_id = "d026fded-54e6-40ed-82bc-cb6a408bc4ed" # Replace with your Azure Tenant ID
 
 # Container App
-#container_app_image = "myregistry.azurecr.io/myapp:latest" # Replace with your container image
-container_app_image = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest" # Replace with your container image
+# Removed: container_app_image - not used in dev environment
+# container_app_image = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
 
 # Function App
 # function_app_service_plan_id            = "your-service-plan-id"            # Replace with your App Service Plan ID

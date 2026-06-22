@@ -7,31 +7,31 @@ output "managed_identity_principal_id" {
 }
 
 output "key_vault_id" {
-  value = module.key_vault.id
+  value = module.key_vault["enabled"].id
 }
 
 output "redis_id" {
-  value = module.redis.id
+  value = module.redis["enabled"].id
 }
 
 output "service_bus_id" {
-  value = module.service_bus.id
+  value = module.service_bus["enabled"].id
 }
 
 output "ai_search_id" {
-  value = module.ai_search.id
+  value = module.ai_search["enabled"].id
 }
 
 output "ai_search_endpoint" {
-  value = module.ai_search.endpoint
+  value = module.ai_search["enabled"].endpoint
 }
 
 output "azure_openai_id" {
-  value = module.azure_openai.id
+  value = module.azure_openai["enabled"].id
 }
 
 output "azure_openai_endpoint" {
-  value = module.azure_openai.endpoint
+  value = module.azure_openai["enabled"].endpoint
 }
 
 # output "acr_login_server" {
@@ -47,7 +47,7 @@ output "azure_openai_endpoint" {
 # }
 
 output "static_web_app_url" {
-  value = module.static_web_app.url
+  value = module.static_web_app["enabled"].url
 }
 
 output "function_app_url" {
@@ -93,7 +93,7 @@ output "app_service_plan_ids" {
 }
 
 output "log_analytics_id" {
-  value = module.log_analytics.id
+  value = module.log_analytics["enabled"].id
 }
 
 # output "apim_gateway_url" {
