@@ -1,0 +1,76 @@
+name: Nurse-Denial-Infra
+
+run-name: >-
+  Nurse-Denial | Env:${{
+  github.event_name == 'workflow_dispatch'
+    && github.event.inputs.environment
+    || 'dev'
+  }} | Run:${{ github.run_number }}
+
+on:
+  pull_request:
+    branches:
+      - develop
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target Terraform environment folder'
+        required: true
+        type: choice
+        options:
+          - dev
+          - qa
+      
+      release_tag:
+        description: Release tag to deploy
+        required: false
+        type: string
+
+      run_apply:
+        description: 'Run apply after plan (manual dispatch only)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  plan:
+    uses: ./.github/workflows/terraform-plan.yml
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      environment: >-
+        ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
+      release_tag: >-
+        ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag || '' }}
+    secrets: inherit # <--- THIS PASSES THE DECRYPTED SECRETS TO THE REUSABLE FILE
+
+  apply:
+    if: >-
+      github.event_name == 'push' || 
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_apply == 'true')
+    needs: plan
+    uses: ./.github/workflows/terraform-apply.yml
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      environment: >-
+        ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
+      release_tag: >-
+        ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag || '' }}
+      source_sha: ${{ needs.plan.outputs.source_sha }}
+    secrets: inherit # <--- THIS PASSES THE DECRYPTED SECRETS TO THE REUSABLE FILE
+
+  release-tag:
+    needs: apply
+    uses: ./.github/workflows/release-tag.yml
+    permissions:
+      contents: write
+      id-token: write
+    with:
+      releaseType: patch
+      releaseTagBranch: develop
