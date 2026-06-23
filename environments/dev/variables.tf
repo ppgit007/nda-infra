@@ -165,6 +165,20 @@ variable "openai_deployments" {
 # }
 
 variable "key_vault_name" {
-  description = "Name of the Key Vault"
+  description = "Optional Key Vault name override. When null, the convention-based local name is used."
   type        = string
+  default     = null
+  nullable    = true
+}
+
+variable "enable_function_vnet_integration" {
+  description = "Whether to enable regional VNet integration for Function Apps"
+  type        = bool
+  default     = false
+}
+
+variable "create_function_storage_role_assignments" {
+  description = "Whether Terraform should create Storage Blob Data Contributor role assignments for Function Apps"
+  type        = bool
+  default     = false
 }

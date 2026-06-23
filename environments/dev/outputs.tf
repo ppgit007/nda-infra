@@ -96,6 +96,20 @@ output "log_analytics_id" {
   value = module.log_analytics["enabled"].id
 }
 
+output "private_endpoint_definitions_planned" {
+  description = "Private endpoint keys and names Terraform planned from locals"
+  value = {
+    for k, pe in local.private_endpoint_definitions : k => pe.name
+  }
+}
+
+output "private_endpoint_ids_created" {
+  description = "Private endpoint IDs successfully created"
+  value = {
+    for k, pe in module.private_endpoints : k => pe.id
+  }
+}
+
 # output "apim_gateway_url" {
 #   value = module.apim.gateway_url
 # }

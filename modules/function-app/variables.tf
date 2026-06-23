@@ -21,6 +21,8 @@ variable "app_service_plan_id" {
 variable "virtual_network_subnet_id" {
   description = "Subnet ID for regional VNet integration"
   type        = string
+  default     = null
+  nullable    = true
 }
 
 variable "user_assigned_identity_id" {

@@ -33,7 +33,7 @@ module "managed_identity" {
 module "key_vault" {
   for_each            = local.module_enabled.key_vault ? { enabled = true } : {}
   source              = "../../modules/key-vault"
-  name                = local.names.key_vault
+  name                = coalesce(var.key_vault_name, local.names.key_vault)
   location            = var.location
   resource_group_name = data.azurerm_resource_group.target_rg.name
   tenant_id           = var.tenant_id
@@ -111,7 +111,7 @@ module "storage_accounts" {
 }
 
 resource "azurerm_role_assignment" "function_storage_blob" {
-  for_each             = local.function_apps_enabled ? local.function_apps : {}
+  for_each             = local.function_apps_enabled && var.create_function_storage_role_assignments ? local.function_apps : {}
   scope                = module.storage_accounts[each.key].id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.managed_identity["enabled"].principal_id
@@ -155,7 +155,7 @@ module "function_apps" {
   location                   = var.location
   resource_group_name        = data.azurerm_resource_group.target_rg.name
   app_service_plan_id        = module.app_service_plans[each.key].id
-  virtual_network_subnet_id  = data.azurerm_subnet.function_apps.id
+  virtual_network_subnet_id  = var.enable_function_vnet_integration ? data.azurerm_subnet.function_apps.id : null
   user_assigned_identity_id  = module.managed_identity["enabled"].id
   storage_container_endpoint = "${module.storage_accounts[each.key].primary_blob_endpoint}${azurerm_storage_container.function_app[each.key].name}"
   runtime_name               = "python"

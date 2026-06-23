@@ -26,6 +26,10 @@ tenant_id = "d026fded-54e6-40ed-82bc-cb6a408bc4ed" # Replace with your Azure Ten
 os_type             = "Linux"
 sku_name            = "FC1"
 
+# Temporary deployment toggles for current subscription permissions/network constraints.
+enable_function_vnet_integration        = false
+create_function_storage_role_assignments = false
+
 # API Management (APIM)
 # apim_publisher_name  = "PP Publisher" # Replace with your APIM publisher name
 # apim_publisher_email = "pp@pp.com"     # Replace with your APIM publisher email
@@ -40,4 +44,4 @@ sku_name            = "FC1"
 static_web_app_name = "my-static-web-app-001" # IMPORTANT: Must be globally unique across Azure
 container_app_name  = "my-container-app"      # Replace with your desired Container App name
 # function_app_name   = "my-function-app"       # Replace with your desired Function App name
-key_vault_name      = "myvault001"            # IMPORTANT: Must be globally unique across Azure (3-24 alphanumeric+dashes)
+# key_vault_name      = "vss-nda-dev-eus-kv"    # Optional override; defaults to convention-based local name
