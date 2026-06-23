@@ -11,5 +11,6 @@
   "log_analytics": true,
   "ai_search": false,
   "azure_openai": false,
+  "apim": false,
   "private_endpoints": true
 }

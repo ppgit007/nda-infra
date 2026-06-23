@@ -44,4 +44,4 @@ create_function_storage_role_assignments = false
 static_web_app_name = "my-static-web-app-001" # IMPORTANT: Must be globally unique across Azure
 container_app_name  = "my-container-app"      # Replace with your desired Container App name
 # function_app_name   = "my-function-app"       # Replace with your desired Function App name
-# key_vault_name      = "vss-nda-dev-eus-kv"    # Optional override; defaults to convention-based local name
+key_vault_name      = "vss-nda-dev-eus-kv01"  # Override with unique suffix to avoid global naming collision

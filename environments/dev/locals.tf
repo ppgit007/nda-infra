@@ -18,6 +18,7 @@ locals {
     log_analytics     = lookup(local.deployment_flags, "log_analytics", true)
     ai_search         = lookup(local.deployment_flags, "ai_search", true)
     azure_openai      = lookup(local.deployment_flags, "azure_openai", true)
+    apim              = lookup(local.deployment_flags, "apim", true)
     private_endpoints = lookup(local.deployment_flags, "private_endpoints", true)
   }
 
