@@ -15,7 +15,7 @@ output "redis_id" {
 }
 
 output "service_bus_id" {
-  value = module.service_bus["enabled"].id
+  value = try(module.service_bus["enabled"].id, null)
 }
 
 output "ai_search_id" {
@@ -47,7 +47,7 @@ output "azure_openai_endpoint" {
 # }
 
 output "static_web_app_url" {
-  value = module.static_web_app["enabled"].url
+  value = try(module.static_web_app["enabled"].url, null)
 }
 
 output "function_app_url" {
@@ -69,21 +69,21 @@ output "storage_account_ids" {
 }
 
 output "app_insights_instrumentation_key" {
-  value     = module.app_insights["fn"].instrumentation_key
+  value     = try(module.app_insights["fn"].instrumentation_key, null)
   sensitive = true
 }
 
 output "app_insights_instrumentation_keys" {
-  value = {
+  value = try({
     for k, ai in module.app_insights : k => ai.instrumentation_key
-  }
+  }, {})
   sensitive = true
 }
 
 output "app_insights_ids" {
-  value = {
+  value = try({
     for k, ai in module.app_insights : k => ai.id
-  }
+  }, {})
 }
 
 output "app_service_plan_ids" {
@@ -93,7 +93,7 @@ output "app_service_plan_ids" {
 }
 
 output "log_analytics_id" {
-  value = module.log_analytics["enabled"].id
+  value = try(module.log_analytics["enabled"].id, null)
 }
 
 output "private_endpoint_definitions_planned" {
