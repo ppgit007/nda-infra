@@ -56,9 +56,6 @@ locals {
     local.module_enabled.private_endpoints && local.module_enabled.storage_accounts ? {
       storage = "privatelink.blob.core.windows.net"
     } : {},
-    local.module_enabled.private_endpoints && local.module_enabled.service_bus ? {
-      service_bus = "privatelink.servicebus.windows.net"
-    } : {},
     local.module_enabled.private_endpoints && local.module_enabled.key_vault ? {
       key_vault = "privatelink.vaultcore.azure.net"
     } : {},
@@ -106,14 +103,6 @@ locals {
         target_id         = module.storage_accounts[storage_key].id
         subresource_names = ["blob"]
         dns_zone_key      = "storage"
-      }
-    } : {},
-    local.module_enabled.service_bus ? {
-      service_bus = {
-        name              = "${local.names.service_bus}-pe"
-        target_id         = module.service_bus["enabled"].id
-        subresource_names = ["namespace"]
-        dns_zone_key      = "service_bus"
       }
     } : {},
     local.module_enabled.key_vault ? {
