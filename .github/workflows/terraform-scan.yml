@@ -1,25 +1,27 @@
 name: Terraform Security Scan
 
+# IaC misconfiguration scanning with Trivy, scoped to the environment being
+# deployed (plus shared modules). Fails the stage when findings are detected.
 on:
   workflow_call:
     inputs:
-      directory:
-        description: 'Directory to scan with Checkov'
+      environment:
+        description: 'Terraform environment folder being deployed (dev/qa)'
+        required: true
+        type: string
+        default: dev
+      severity:
+        description: 'Comma-separated severities that should fail the stage'
         required: false
         type: string
-        default: '.'
-      soft_fail:
-        description: 'When true, report findings but do not fail the stage (use for dry runs).'
-        required: false
-        type: boolean
-        default: true
+        default: 'CRITICAL,HIGH'
 
 permissions:
   contents: read
 
 jobs:
   scan:
-    name: Checkov IaC scan
+    name: Trivy IaC scan (${{ inputs.environment }})
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -27,21 +29,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: ${{ inputs.directory }}
-          framework: terraform
-          quiet: true
-          soft_fail: ${{ inputs.soft_fail }}
-          output_format: cli,sarif
-          output_file_path: console,checkov-results.sarif
+      # Build a skip list so we scan the target environment + shared modules,
+      # but ignore the other environment folders (and provider cache).
+      - name: Determine directories to skip
+        id: scope
+        run: |
+          SKIP=".git,**/.terraform"
+          for d in environments/*/ ; do
+            name=$(basename "$d")
+            if [ "$name" != "${{ inputs.environment }}" ]; then
+              SKIP="$SKIP,${d%/}"
+            fi
+          done
+          echo "skip_dirs=$SKIP" >> "$GITHUB_OUTPUT"
+          echo "Skipping directories: $SKIP"
 
-      - name: Upload Checkov results
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Run Trivy IaC scan
+        uses: aquasecurity/trivy-action@0.28.0
         with:
-          name: checkov-results-${{ github.run_id }}
-          path: checkov-results.sarif
-          retention-days: 30
+          scan-type: config
+          scan-ref: .
+          skip-dirs: ${{ steps.scope.outputs.skip_dirs }}
+          severity: ${{ inputs.severity }}
+          exit-code: '1' # fail the stage when any matching finding is detected
+          format: table
+          hide-progress: true
+

@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   validate:
-    name: Terraform fmt & validate (${{ inputs.environment }})
+    name: Terraform validate (${{ inputs.environment }})
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,10 +38,13 @@ jobs:
         with:
           terraform_version: ${{ inputs.terraform_version }}
 
-      # Fails the stage if any *.tf file in the repo is not canonically formatted.
+      # Fails the stage if any *.tf file for THIS environment or the shared
+      # modules is not canonically formatted (other environments are ignored).
       - name: Terraform format check
         working-directory: .
-        run: terraform fmt -check -recursive
+        run: |
+          terraform fmt -check -recursive environments/${{ inputs.environment }}
+          terraform fmt -check -recursive modules
 
       # Initialise providers only (no backend / no Azure auth needed for validation).
       - name: Terraform init (no backend)

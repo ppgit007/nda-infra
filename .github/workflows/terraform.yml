@@ -50,15 +50,14 @@ jobs:
     with:
       environment: ${{ needs.initialize.outputs.environment }}
 
+  # Runs sequentially after validate (not in parallel).
   scan:
-    needs: initialize
+    needs: [initialize, validate]
     uses: ./.github/workflows/terraform-scan.yml
     permissions:
       contents: read
     with:
-      # Dry-run friendly: report findings without failing the pipeline.
-      # Set to false once you're ready to enforce Checkov as a hard gate.
-      soft_fail: true
+      environment: ${{ needs.initialize.outputs.environment }}
 
   plan:
     needs: [initialize, validate, scan]
