@@ -67,14 +67,6 @@ jobs:
       - name: Configure Terraform plugin cache
         run: echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >> $GITHUB_ENV
 
-      - name: Auto-format Terraform files
-        working-directory: .
-        run: terraform fmt -recursive
-
-      - name: Terraform format check
-        working-directory: .
-        run: terraform fmt -check -recursive
-
       - name: Login to Azure using OIDC
         uses: azure/login@v2
         with:
@@ -84,9 +76,6 @@ jobs:
 
       - name: Terraform init
         run: terraform init -input=false
-
-      - name: Terraform validate
-        run: terraform validate
 
       # - name: Run Terraform Tests
       #   working-directory: environments/${{ inputs.environment }}

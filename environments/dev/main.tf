@@ -7,6 +7,8 @@ data "azurerm_virtual_network" "existing" {
   resource_group_name = data.azurerm_resource_group.target_rg.name
 }
 
+# Subnet is created and delegated (Microsoft.App/environments) by the client's
+# networking team. We consume it read-only — never manage or import it here.
 data "azurerm_subnet" "function_apps" {
   name                 = var.function_subnet_name
   resource_group_name  = data.azurerm_resource_group.target_rg.name

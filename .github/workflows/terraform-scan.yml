@@ -1,0 +1,47 @@
+name: Terraform Security Scan
+
+on:
+  workflow_call:
+    inputs:
+      directory:
+        description: 'Directory to scan with Checkov'
+        required: false
+        type: string
+        default: '.'
+      soft_fail:
+        description: 'When true, report findings but do not fail the stage (use for dry runs).'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Checkov IaC scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: ${{ inputs.directory }}
+          framework: terraform
+          quiet: true
+          soft_fail: ${{ inputs.soft_fail }}
+          output_format: cli,sarif
+          output_file_path: console,checkov-results.sarif
+
+      - name: Upload Checkov results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkov-results-${{ github.run_id }}
+          path: checkov-results.sarif
+          retention-days: 30
