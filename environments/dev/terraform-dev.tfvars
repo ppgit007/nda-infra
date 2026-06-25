@@ -1,14 +1,14 @@
 # General Configuration
-location                = "eastus"           # Azure region where resources will be deployed 
-staticWebAppLocation    = "eastus2"          # Static Web App requires eastus2, westus2, etc.
-environment             = "dev"              # Environment name (e.g., dev, staging, prod)
-subscription_shortcut   = "vss"              # Subscription shortcut code for resource naming
-project                 = "nursedenial"      # Project name for resource naming
-project_shortcut        = "nda"              # Project shortcut code for resource naming
-location_shortcut       = "eus"              # Location shortcut code (eus=eastus, eus2=eastus2, etc.)
-component               = "mycomponent"      # Component name for resource naming
-owner                   = "pp@pp.com"        # Owner of the resources
-resource_group_name     = "my-rg1"           # Name of the resource group (must be unique within the subscription)
+location              = "eastus"      # Azure region where resources will be deployed 
+staticWebAppLocation  = "eastus2"     # Static Web App requires eastus2, westus2, etc.
+environment           = "dev"         # Environment name (e.g., dev, staging, prod)
+subscription_shortcut = "vss"         # Subscription shortcut code for resource naming
+project               = "nursedenial" # Project name for resource naming
+project_shortcut      = "nda"         # Project shortcut code for resource naming
+location_shortcut     = "eus"         # Location shortcut code (eus=eastus, eus2=eastus2, etc.)
+component             = "mycomponent" # Component name for resource naming
+owner                 = "pp@pp.com"   # Owner of the resources
+resource_group_name   = "my-rg1"      # Name of the resource group (must be unique within the subscription)
 
 # Key Vault
 tenant_id = "d026fded-54e6-40ed-82bc-cb6a408bc4ed" # Replace with your Azure Tenant ID
@@ -23,11 +23,11 @@ tenant_id = "d026fded-54e6-40ed-82bc-cb6a408bc4ed" # Replace with your Azure Ten
 # function_app_storage_account_access_key = "your-storage-account-access-key" # Replace with your Storage Account Access Key
 
 # Function App Service Plan
-os_type             = "Linux"
-sku_name            = "FC1"
+os_type  = "Linux"
+sku_name = "FC1"
 
 # Temporary deployment toggles for current subscription permissions/network constraints.
-enable_function_vnet_integration        = false
+enable_function_vnet_integration         = false
 create_function_storage_role_assignments = false
 
 # API Management (APIM)
@@ -44,4 +44,4 @@ create_function_storage_role_assignments = false
 static_web_app_name = "my-static-web-app-001" # IMPORTANT: Must be globally unique across Azure
 container_app_name  = "my-container-app"      # Replace with your desired Container App name
 # function_app_name   = "my-function-app"       # Replace with your desired Function App name
-key_vault_name      = "vss-nda-dev-eus-kv01"  # Override with unique suffix to avoid global naming collision
+key_vault_name = "vss-nda-dev-eus-kv01" # Override with unique suffix to avoid global naming collision

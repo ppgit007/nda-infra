@@ -41,8 +41,8 @@ locals {
   resource_name_alphanumeric = replace(local.name_prefix, "-", "")
 
   names = {
-    static_web_app = "${local.name_prefix}-${local.abbreviations.static_web_app}"
-    key_vault      = "${local.name_prefix}-${local.abbreviations.key_vault}"
+    static_web_app   = "${local.name_prefix}-${local.abbreviations.static_web_app}"
+    key_vault        = "${local.name_prefix}-${local.abbreviations.key_vault}"
     managed_identity = "${local.name_prefix}-${local.abbreviations.managed_identity}"
     redis            = "${local.name_prefix}-${local.abbreviations.redis}"
     service_bus      = "${local.name_prefix}-${local.abbreviations.service_bus}"
@@ -139,5 +139,5 @@ locals {
     } : {}
   ) : {}
 
-  
+
 }

@@ -38,9 +38,10 @@ jobs:
         with:
           terraform_version: ${{ inputs.terraform_version }}
 
-      # Fails the stage if any *.tf file for THIS environment or the shared
-      # modules is not canonically formatted (other environments are ignored).
-      - name: Terraform format check
+      # Auto-formats the *.tf files for THIS environment and the shared modules
+      # so the stage never blocks on formatting (other environments are ignored).
+      # Note: changes are applied in the runner only, not committed back to git.
+      - name: Terraform format
         working-directory: .
         run: |
           terraform fmt -check -recursive environments/${{ inputs.environment }}

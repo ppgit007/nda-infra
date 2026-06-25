@@ -136,17 +136,17 @@ resource "azurerm_storage_container" "function_app" {
 # }
 
 module "app_service_plans" {
-  for_each            = local.module_enabled.app_service_plans ? local.app_service_plans : {}
-  source              = "../../modules/app-service-plan"
+  for_each = local.module_enabled.app_service_plans ? local.app_service_plans : {}
+  source   = "../../modules/app-service-plan"
 
   name                = each.value
   location            = var.location
   resource_group_name = data.azurerm_resource_group.target_rg.name
 
-  os_type             = var.os_type
-  sku_name            = each.key == "api" ? var.api_sku_name : var.sku_name
+  os_type  = var.os_type
+  sku_name = each.key == "api" ? var.api_sku_name : var.sku_name
 
-  tags                = local.common_tags
+  tags = local.common_tags
 }
 
 # Function Apps (for_each pattern)
@@ -229,14 +229,14 @@ module "private_endpoints" {
   for_each = local.private_endpoint_definitions
   source   = "../../modules/private-endpoint"
 
-  name                          = each.value.name
-  location                      = var.location
-  resource_group_name           = data.azurerm_resource_group.target_rg.name
-  subnet_id                     = data.azurerm_subnet.private_endpoints.id
+  name                           = each.value.name
+  location                       = var.location
+  resource_group_name            = data.azurerm_resource_group.target_rg.name
+  subnet_id                      = data.azurerm_subnet.private_endpoints.id
   private_connection_resource_id = each.value.target_id
-  subresource_names             = each.value.subresource_names
-  private_dns_zone_ids          = [azurerm_private_dns_zone.private_dns_zone[each.value.dns_zone_key].id]
-  tags                          = local.common_tags
+  subresource_names              = each.value.subresource_names
+  private_dns_zone_ids           = [azurerm_private_dns_zone.private_dns_zone[each.value.dns_zone_key].id]
+  tags                           = local.common_tags
 }
 
 # API Management (APIM)

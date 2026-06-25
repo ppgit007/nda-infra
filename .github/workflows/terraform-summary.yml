@@ -41,7 +41,7 @@ permissions:
 
 jobs:
   summary:
-    name: Pipeline summary
+    name: Pipeline summary (${{ inputs.environment }})
     runs-on: ubuntu-latest
     steps:
       - name: Publish run outcome

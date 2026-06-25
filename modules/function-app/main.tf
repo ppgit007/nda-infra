@@ -13,16 +13,16 @@
 #}
 
 resource "azurerm_function_app_flex_consumption" "function_app" {
-  name                = var.name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  service_plan_id     = var.app_service_plan_id
+  name                      = var.name
+  location                  = var.location
+  resource_group_name       = var.resource_group_name
+  service_plan_id           = var.app_service_plan_id
   virtual_network_subnet_id = var.virtual_network_subnet_id
   #vnet_route_all_enabled    = true
 
-  storage_container_type      = "blobContainer"
-  storage_container_endpoint  = var.storage_container_endpoint
-  storage_authentication_type = "UserAssignedIdentity"
+  storage_container_type            = "blobContainer"
+  storage_container_endpoint        = var.storage_container_endpoint
+  storage_authentication_type       = "UserAssignedIdentity"
   storage_user_assigned_identity_id = var.user_assigned_identity_id
 
   identity {
